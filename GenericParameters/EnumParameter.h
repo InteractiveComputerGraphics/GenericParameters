@@ -45,6 +45,13 @@ namespace GenParam
 			val.id = id;
 			m_enumValues.push_back(val);
 		}
+		
+		/** Clear all enum values.
+		 */
+		void clearEnumValues()
+		{
+			m_enumValues.clear();
+		}
 
 		const std::vector<EnumValue>& getEnumValues() { return m_enumValues;  }
 	};
