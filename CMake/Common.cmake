@@ -8,18 +8,18 @@ set(CMAKE_DEBUG_POSTFIX "_d")
 set(CMAKE_RELWITHDEBINFO_POSTFIX "_rd")
 set(CMAKE_MINSIZEREL_POSTFIX "_ms")
 
-if (WIN32)
+if (MSVC)
     set(CMAKE_USE_RELATIVE_PATHS "1")
     # Set compiler flags for "release"
     set(CMAKE_CXX_FLAGS_RELEASE "/MD /MP /Ox /Ob2 /Oi /Ot /fp:fast /D NDEBUG /openmp") 
 	SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MP") 
-endif (WIN32)
+endif (MSVC)
 
-if (UNIX)
+if (UNIX OR MINGW)
     set(CMAKE_USE_RELATIVE_PATHS "1")
     # Set compiler flags for "release"
     set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG -fopenmp") 
-endif (UNIX)
+endif (UNIX OR MINGW)
 
 if(APPLE)
 	set(CMAKE_MACOSX_RPATH 1)
