@@ -12,6 +12,7 @@ int GenParam::TestParameterObject::MY_ENUM_PARAMETER = -1;
 int GenParam::TestParameterObject::MY_ENUM_PARAMETER2 = -1;
 int GenParam::TestParameterObject::MY_STRING_PARAMETER = -1;
 int GenParam::TestParameterObject::MY_VEC3_PARAMETER = -1;
+int GenParam::TestParameterObject::MY_FUNCTION_PARAMETER = -1;
 
 int GenParam::TestParameterObject::MY_ENUM_VALUE1 = -1;
 int GenParam::TestParameterObject::MY_ENUM_VALUE2 = -1;
@@ -75,6 +76,10 @@ void TestParameterObject::initParameters()
 	MY_VEC3_PARAMETER = createVectorParameter("vec3Param", "Vector3 param", 3, &m_vec3Value[0]);
 	setGroup(MY_VEC3_PARAMETER, "ParameterGroup");
 	setDescription(MY_VEC3_PARAMETER, "Help text");
+
+	MY_FUNCTION_PARAMETER = createFunctionParameter("funcParam", "Function param", [&]() { setCounter(getCounter() + 1); });
+	setGroup(MY_FUNCTION_PARAMETER, "ParameterGroup");
+	setDescription(MY_FUNCTION_PARAMETER, "Help text");
 
 }
 

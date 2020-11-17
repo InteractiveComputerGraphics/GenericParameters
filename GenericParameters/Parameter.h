@@ -31,7 +31,8 @@ namespace GenParam
 			VEC_UINT16,
 			VEC_UINT32,
 			ENUM, 
-			STRING
+			STRING,
+			FUNCTION
 		};
 
 		using Ptr = std::unique_ptr<ParameterBase>;

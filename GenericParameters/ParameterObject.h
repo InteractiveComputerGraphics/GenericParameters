@@ -6,6 +6,7 @@
 #include "NumericParameter.h"
 #include "EnumParameter.h"
 #include "VectorParameter.h"
+#include "FunctionParameter.h"
 
 namespace GenParam
 {
@@ -91,6 +92,12 @@ namespace GenParam
 			return static_cast<int>(m_parameters.size() - 1);
 		}
 
+		int createFunctionParameter(const std::string &name, const std::string &label, FunctionParameter::CallbackFunc function)
+		{
+			m_parameters.push_back(std::unique_ptr<FunctionParameter>(new FunctionParameter(name, label, function)));
+			return static_cast<int>(m_parameters.size() - 1);
+		}
+
 		/** Get the parameter value by its id. */
 		template<typename T>
 		T getValue(const unsigned int parameterId) const
@@ -127,6 +134,16 @@ namespace GenParam
 				static_cast<VectorParameter<T>*>(paramBase)->setValue(v);
 			else
 				std::cerr << "Type mismatch in setValue!" << std::endl;
+		}
+
+		/** Call the function of a function parameter by its id. */
+		void callFunction(const unsigned int parameterId)
+		{
+			ParameterBase *paramBase = getParameter(parameterId);
+			if (paramBase->getType() == ParameterBase::FUNCTION)
+				static_cast<FunctionParameter*>(paramBase)->callFunction();
+			else
+				std::cerr << "Type mismatch in callFunction!" << std::endl;
 		}
 
 		void setVisible(const unsigned int parameterId, const bool v) { m_parameters[parameterId]->setVisible(v); }
