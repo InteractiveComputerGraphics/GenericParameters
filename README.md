@@ -2,13 +2,13 @@
 
 **GenericParameters** is a C++ header-only library to define generic parameters. A generic parameter can be defined by a pointer to a variable or by set/get-functions. Moreover, a generic parameter stores additional information like the parameter type, max/min limits, a description, etc. Such parameters are very useful, e.g., for an automatic generation of GUI elements. 
 
-The library is used in [SPlisHSPlasH] (https://github.com/InteractiveComputerGraphics/SPlisHSPlasH) to handle all parameters of the implemented fluid simulation methods. 
+The library is used in [SPlisHSPlasH](https://github.com/InteractiveComputerGraphics/SPlisHSPlasH) to handle all parameters of the implemented fluid simulation methods. 
 
 **Author**: [Jan Bender](http://www.interactive-graphics.de), **License**: MIT
 
 ## Libraries using GenericParameters
-* [SPlisHSPlasH] (https://github.com/InteractiveComputerGraphics/SPlisHSPlasH) - A C++ library for the physically-based simulation of fluids using Smoothed Particle Hydrodynamics 
-* [PBD] (https://github.com/InteractiveComputerGraphics/PositionBasedDynamics) - A C++ library for physically-based simulation of rigid bodies, deformables, cloth and fluids using Position-Based Dynamics (Coming soon)
+* [SPlisHSPlasH](https://github.com/InteractiveComputerGraphics/SPlisHSPlasH) - A C++ library for the physically-based simulation of fluids using Smoothed Particle Hydrodynamics 
+* [PBD](https://github.com/InteractiveComputerGraphics/PositionBasedDynamics) - A C++ library for physically-based simulation of rigid bodies, deformables, cloth and fluids using Position-Based Dynamics (Coming soon)
 
 
 ## Build Instructions
