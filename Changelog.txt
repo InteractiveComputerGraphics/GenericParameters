@@ -1,3 +1,4 @@
+	- added copy constructor and assignment operator
 	- added FunctionParameter
 
 1.0.0

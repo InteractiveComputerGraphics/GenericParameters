@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <memory>
+#include <string>
 #include "NumericParameter.h"
 #include "EnumParameter.h"
 #include "VectorParameter.h"
@@ -10,6 +11,12 @@
 
 namespace GenParam
 {
+	template<typename T, typename... Args>
+	std::unique_ptr<T> make_unique(Args&&... args)
+	{
+	    return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
+	}
+
 	/** An object that uses generic parameters should be inherited from this class.
 	* An example is given in the class TestParameterObject.
 	*/
@@ -21,6 +28,21 @@ namespace GenParam
 	public:
 		ParameterObject() : m_parameters() {}
 		virtual ~ParameterObject() { m_parameters.clear(); }
+
+		ParameterObject(const ParameterObject& other)
+		{
+			m_parameters.reserve(other.m_parameters.size());
+			for (const auto& e : other.m_parameters)
+				m_parameters.push_back(make_unique<GenParam::ParameterBase>(*e));
+		}
+
+		ParameterObject& operator=(const ParameterObject& other)
+		{
+			m_parameters.reserve(other.m_parameters.size());
+			for (const auto& e : other.m_parameters)
+				m_parameters.push_back(make_unique<GenParam::ParameterBase>(*e));
+			return *this;
+		}
 
 		/** This method should be overwritten to init the parameter definitions. */
 		virtual void initParameters() {}
