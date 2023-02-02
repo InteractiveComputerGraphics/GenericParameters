@@ -20,7 +20,7 @@ int main( int argc, char **argv )
 void paramTest()
 {
 	TestParameterObject tc;
-	assert(tc.numParameters() == 7);
+	assert(tc.numParameters() == 8);
 
 	auto boolParam = static_cast<BoolParameter*>(tc.getParameter(TestParameterObject::MY_BOOL_PARAMETER));
 	assert(boolParam->getValue() == true);
@@ -89,6 +89,14 @@ void paramTest()
 	assert(vecValue[1] == 3);
 	assert(vecValue[2] == 4.5);
  	assert(tc.getType(TestParameterObject::MY_VEC3_PARAMETER) == ParameterBase::VEC_DOUBLE);
+
+	tc.setCounter(0);
+	auto funcParam = static_cast<FunctionParameter*>	(tc.getParameter(TestParameterObject::MY_FUNCTION_PARAMETER));
+	funcParam->callFunction();
+	assert(tc.getCounter() == 1);
+	tc.callFunction(TestParameterObject::MY_FUNCTION_PARAMETER);
+	assert(tc.getCounter() == 2);
+	assert(tc.getType(TestParameterObject::MY_FUNCTION_PARAMETER) == ParameterBase::FUNCTION);
 
 	std::cout << "Success\n";
 }

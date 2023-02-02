@@ -3,12 +3,20 @@
 
 #include <vector>
 #include <memory>
+#include <string>
 #include "NumericParameter.h"
 #include "EnumParameter.h"
 #include "VectorParameter.h"
+#include "FunctionParameter.h"
 
 namespace GenParam
 {
+	template<typename T, typename... Args>
+	std::unique_ptr<T> make_unique(Args&&... args)
+	{
+	    return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
+	}
+
 	/** An object that uses generic parameters should be inherited from this class.
 	* An example is given in the class TestParameterObject.
 	*/
@@ -20,6 +28,21 @@ namespace GenParam
 	public:
 		ParameterObject() : m_parameters() {}
 		virtual ~ParameterObject() { m_parameters.clear(); }
+
+		ParameterObject(const ParameterObject& other)
+		{
+			m_parameters.reserve(other.m_parameters.size());
+			for (const auto& e : other.m_parameters)
+				m_parameters.push_back(make_unique<GenParam::ParameterBase>(*e));
+		}
+
+		ParameterObject& operator=(const ParameterObject& other)
+		{
+			m_parameters.reserve(other.m_parameters.size());
+			for (const auto& e : other.m_parameters)
+				m_parameters.push_back(make_unique<GenParam::ParameterBase>(*e));
+			return *this;
+		}
 
 		/** This method should be overwritten to init the parameter definitions. */
 		virtual void initParameters() {}
@@ -85,9 +108,15 @@ namespace GenParam
 		}
 
 		template<typename T>
-		int createVectorParameter(const std::string &name, const std::string &label, const unsigned int dim, ParameterBase::GetFunc<T> getVecValue, ParameterBase::SetVecFunc<T> setVecValue = {})
+		int createVectorParameter(const std::string &name, const std::string &label, const unsigned int dim, ParameterBase::GetVecFunc<T> getVecValue, ParameterBase::SetVecFunc<T> setVecValue = {})
 		{
 			m_parameters.push_back(std::unique_ptr<VectorParameter<T>>(new VectorParameter<T>(name, label, dim, getVecValue, setVecValue)));
+			return static_cast<int>(m_parameters.size() - 1);
+		}
+
+		int createFunctionParameter(const std::string &name, const std::string &label, FunctionParameter::CallbackFunc function)
+		{
+			m_parameters.push_back(std::unique_ptr<FunctionParameter>(new FunctionParameter(name, label, function)));
 			return static_cast<int>(m_parameters.size() - 1);
 		}
 
@@ -127,6 +156,16 @@ namespace GenParam
 				static_cast<VectorParameter<T>*>(paramBase)->setValue(v);
 			else
 				std::cerr << "Type mismatch in setValue!" << std::endl;
+		}
+
+		/** Call the function of a function parameter by its id. */
+		void callFunction(const unsigned int parameterId)
+		{
+			ParameterBase *paramBase = getParameter(parameterId);
+			if (paramBase->getType() == ParameterBase::FUNCTION)
+				static_cast<FunctionParameter*>(paramBase)->callFunction();
+			else
+				std::cerr << "Type mismatch in callFunction!" << std::endl;
 		}
 
 		void setVisible(const unsigned int parameterId, const bool v) { m_parameters[parameterId]->setVisible(v); }
