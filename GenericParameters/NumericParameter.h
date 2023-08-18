@@ -7,6 +7,7 @@
 #include <iostream>
 #include <float.h>
 #include <algorithm>
+#include <limits>
 
 namespace GenParam
 {
